@@ -1,0 +1,17 @@
+name: snoj
+version: "0.1"
+author: JDepooter
+about: Re-orders JSON files so all objects have alphabetical keys
+args:
+    - input:
+        short: i
+        long: input
+        help: Sets the input file to use
+        required: true
+        takes_value: true
+    - output:
+        short: o
+        long: output
+        help: Sets the file to write to
+        required: true
+        takes_value: true
