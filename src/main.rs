@@ -4,7 +4,7 @@ extern crate clap;
 use clap::App;
 use serde_json::Value;
 use std::fs::File;
-use std::io::BufReader;
+use std::io::{BufReader, BufWriter};
 
 fn main() {
     let yaml = load_yaml!("cli.yml");
@@ -30,4 +30,25 @@ fn main() {
             return;
         }
     };
+
+    let output_file = matches.value_of("output").unwrap();
+    println!("Writing output file: {}", output_file);
+    let out = match File::create(output_file) {
+        Ok(f) => f,
+        Err(e) => {
+            println!("Could not open output file!");
+            println!("{}", e);
+            return;
+        }
+    };
+
+    let writer = BufWriter::new(out);
+    match serde_json::to_writer_pretty(writer, &json) {
+        Ok(()) => {}
+        Err(e) => {
+            println!("Error writing JSON to output file!");
+            println!("{}", e);
+            return;
+        }
+    }
 }
